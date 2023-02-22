@@ -7,7 +7,7 @@ import Image from 'next/image';
 
 function Header() {
   return (
-    <div className="sticky top-0 z-50 flex w-screen items-center px-4 py-2 shadow-md bg-white">
+    <header className="sticky top-0 z-50 flex items-center px-4 py-2 shadow-md bg-white">
       <Button disableRipple={false} className="hidden md:inline-flex border-0">
         <MenuIcon color="secondary" fontSize="medium" />
       </Button>
@@ -27,15 +27,18 @@ function Header() {
       >
         <AppsIcon color="secondary" fontSize="medium" />
       </Button>
-      <Image
-        loading="lazy"
-        className="cursor-pointer h-12 w-12 rounded-full ml-2"
-        src="https://upload.wikimedia.org/wikipedia/commons/b/b5/Windows_10_Default_Profile_Picture.svg"
-        alt="Profile Picture"
-        width="0"
-        height="0"
-      ></Image>
-    </div>
+      <div className="cursor-pointer h-12 w-12 rounded-full ml-2">
+        <Image
+          loading="lazy"
+          src="https://upload.wikimedia.org/wikipedia/commons/b/b5/Windows_10_Default_Profile_Picture.svg"
+          alt="Profile Picture"
+          width="0"
+          height="0"
+          sizes="100vw"
+          className="w-full h-full"
+        ></Image>
+      </div>
+    </header>
   );
 }
 
