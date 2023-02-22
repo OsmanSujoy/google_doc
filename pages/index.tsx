@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import DocumentList from '../components/DocumentList';
 import Header from '../components/Header';
 import NewDocument from '../components/NewDocument';
 
@@ -11,6 +12,7 @@ export default function Home() {
       </Head>
       <Header />
       <NewDocument />
+      <DocumentList />
     </div>
   );
 }
