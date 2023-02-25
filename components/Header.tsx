@@ -9,7 +9,10 @@ import Image from 'next/image';
 function Header() {
   return (
     <header className="sticky top-0 z-50 flex items-center px-4 py-2 shadow-md bg-white">
-      <Button disableRipple={false} className="hidden md:inline-flex border-0">
+      <Button
+        disableRipple={false}
+        className="hidden md:inline-flex cursor-pointer h-12 w-12 rounded-full mt-2 border-2 hover:bg-gray-200"
+      >
         <MenuIcon color="secondary" fontSize="medium" />
       </Button>
       <DescriptionIcon color="primary" fontSize="large" />
