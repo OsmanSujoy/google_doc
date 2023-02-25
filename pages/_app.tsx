@@ -1,4 +1,5 @@
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { SessionProvider } from 'next-auth/react';
 import type { AppProps } from 'next/app';
 import '../styles/globals.css';
 
@@ -21,7 +22,9 @@ const theme = createTheme({
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <ThemeProvider theme={theme}>
-      <Component {...pageProps} />
+      <SessionProvider session={pageProps.session}>
+        <Component {...pageProps} />
+      </SessionProvider>
     </ThemeProvider>
   );
 }

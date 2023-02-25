@@ -3,6 +3,7 @@ import DescriptionIcon from '@mui/icons-material/Description';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import Button from '@mui/material/Button';
+import { signOut } from 'next-auth/react';
 import Image from 'next/image';
 
 function Header() {
@@ -36,6 +37,7 @@ function Header() {
           height="0"
           sizes="100vw"
           className="w-full h-full"
+          onClick={() => signOut()}
         ></Image>
       </div>
     </header>
