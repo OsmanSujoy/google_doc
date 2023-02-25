@@ -2,14 +2,17 @@ import { useSession } from 'next-auth/react';
 import Head from 'next/head';
 import DocumentList from '../components/DocumentList';
 import Header from '../components/Header';
+import Loading from '../components/Loading';
 import Login from '../components/Login';
 import NewDocument from '../components/NewDocument';
 
 export default function Home() {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
+  if (status === 'loading') {
+    return <Loading />;
+  }
 
-  if (!session) return <Login />;
-  else
+  if (status === 'authenticated') {
     return (
       <div>
         <Head>
@@ -21,4 +24,7 @@ export default function Home() {
         <DocumentList />
       </div>
     );
+  }
+
+  return <Login />;
 }
