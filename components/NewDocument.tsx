@@ -2,7 +2,11 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { Button } from '@mui/material';
 import Image from 'next/image';
 
-function NewDocument() {
+interface Props {
+  handleClickOpen: () => void;
+}
+
+function NewDocument({ handleClickOpen }: Props) {
   return (
     <section className=" bg-[#F8F9FA pb-10 px-10">
       <div className="max-w-3xl mx-auto">
@@ -13,7 +17,10 @@ function NewDocument() {
           </Button>
         </div>
         <div>
-          <div className=" relative h-52 w-40 border-2 cursor-pointer hover:border-blue-700">
+          <div
+            onClick={() => handleClickOpen()}
+            className=" relative h-52 w-40 border-2 cursor-pointer hover:border-blue-700"
+          >
             <Image
               src="/new_document.png"
               alt="Medium Logo"

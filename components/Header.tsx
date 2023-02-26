@@ -3,10 +3,11 @@ import DescriptionIcon from '@mui/icons-material/Description';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import Button from '@mui/material/Button';
-import { signOut } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
 
 function Header() {
+  const { data: session } = useSession();
   return (
     <header className="sticky top-0 z-50 flex items-center px-4 py-2 shadow-md bg-white">
       <Button
@@ -34,12 +35,15 @@ function Header() {
       <div className="cursor-pointer h-12 w-12 rounded-full ml-2">
         <Image
           loading="lazy"
-          src="https://upload.wikimedia.org/wikipedia/commons/b/b5/Windows_10_Default_Profile_Picture.svg"
+          src={
+            session?.user?.image ||
+            'https://upload.wikimedia.org/wikipedia/commons/b/b5/Windows_10_Default_Profile_Picture.svg'
+          }
           alt="Profile Picture"
           width="0"
           height="0"
           sizes="100vw"
-          className="w-full h-full"
+          className="w-full h-full rounded-full"
           onClick={() => signOut()}
         ></Image>
       </div>
