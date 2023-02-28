@@ -18,7 +18,6 @@ export default function Home() {
   const handleClickOpen = () => {
     setModal(true);
   };
-  const createDocument = () => {};
 
   if (status === 'loading') {
     return <Loading />;
@@ -35,11 +34,7 @@ export default function Home() {
           <Header />
           <div>
             <NewDocument handleClickOpen={handleClickOpen} />
-            <Modal
-              createDocument={createDocument}
-              showModal={showModal}
-              setModal={setModal}
-            />
+            <Modal showModal={showModal} setModal={setModal} />
           </div>
         </div>
         <DocumentList />
