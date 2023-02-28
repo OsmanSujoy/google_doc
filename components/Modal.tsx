@@ -1,4 +1,4 @@
-import { Button } from '@mui/material';
+import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -7,19 +7,47 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { useTheme } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
+import { useSession } from 'next-auth/react';
 import { Dispatch, SetStateAction, useState } from 'react';
+import { db } from '../firebase.config';
+import Loading from './Loading';
 
 interface Props {
-  createDocument: () => void;
   showModal: boolean;
   setModal: Dispatch<SetStateAction<boolean>>;
 }
-function Modal({ createDocument, showModal, setModal }: Props) {
+function Modal({ showModal, setModal }: Props) {
+  const { data: Session } = useSession();
   const [input, setInput] = useState('');
+  const [loading, setLoading] = useState(false);
+
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
   const handleClose = () => setModal(false);
+
+  const createDocument = async () => {
+    if (!input) return;
+    if (Session?.user?.email) {
+      setLoading(true);
+      try {
+        const docRef = await addDoc(collection(db, 'userDocs'), {
+          fileName: input,
+          username: Session.user.email,
+          timestamp: serverTimestamp(),
+        });
+        console.log('Document written with ID: ', docRef.id);
+        setInput('');
+        setLoading(false);
+        setModal(false);
+      } catch (e) {
+        console.error('Error adding document: ', e);
+      }
+    } else {
+      console.log('No session');
+    }
+  };
   return (
     <Dialog
       fullScreen={fullScreen}
@@ -44,7 +72,7 @@ function Modal({ createDocument, showModal, setModal }: Props) {
           type="text"
           fullWidth
           variant="standard"
-          onKeyDown={(e) => e.key === 'Enter' && createDocument()}
+          onKeyDown={(e) => e.key === 'Enter' && (async () => createDocument())}
         />
       </DialogContent>
       <DialogActions>
@@ -59,11 +87,13 @@ function Modal({ createDocument, showModal, setModal }: Props) {
         <Button
           variant="outlined"
           color="primary"
-          onKeyDown={createDocument}
+          onClick={async () => createDocument()}
           autoFocus
+          disabled={loading}
         >
           Create
         </Button>
+        {loading && <Loading />}
       </DialogActions>
     </Dialog>
   );
