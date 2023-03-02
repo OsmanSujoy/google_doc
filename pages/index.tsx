@@ -12,7 +12,7 @@ import NewDocument from '../components/NewDocument';
 import { authOptions } from './api/auth/[...nextauth]';
 
 export default function Home() {
-  const { status } = useSession();
+  const { status, data: Session } = useSession();
   const [showModal, setModal] = useState(false);
 
   const handleClickOpen = () => {
@@ -34,10 +34,14 @@ export default function Home() {
           <Header />
           <div>
             <NewDocument handleClickOpen={handleClickOpen} />
-            <Modal showModal={showModal} setModal={setModal} />
+            <Modal
+              showModal={showModal}
+              setModal={setModal}
+              Session={Session}
+            />
           </div>
         </div>
-        <DocumentList />
+        <DocumentList Session={Session} />
       </div>
     );
   }

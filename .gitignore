@@ -2,6 +2,7 @@
 
 # firebase credentials
 firebaseServiceAccountKey.json
+firebase.config.ts
 
 # dependencies
 /node_modules

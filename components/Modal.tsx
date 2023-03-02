@@ -7,8 +7,8 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { useTheme } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
-import { useSession } from 'next-auth/react';
+import { addDoc, collection, doc, serverTimestamp } from 'firebase/firestore';
+import { Session } from 'next-auth';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { db } from '../firebase.config';
 import Loading from './Loading';
@@ -16,9 +16,9 @@ import Loading from './Loading';
 interface Props {
   showModal: boolean;
   setModal: Dispatch<SetStateAction<boolean>>;
+  Session: Session | null;
 }
-function Modal({ showModal, setModal }: Props) {
-  const { data: Session } = useSession();
+function Modal({ showModal, setModal, Session }: Props) {
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -32,20 +32,21 @@ function Modal({ showModal, setModal }: Props) {
     if (Session?.user?.email) {
       setLoading(true);
       try {
-        const docRef = await addDoc(collection(db, 'userDocs'), {
+        const docRef = doc(db, 'userDocs', Session.user.email);
+        const colRef = collection(docRef, 'docs');
+
+        await addDoc(colRef, {
           fileName: input,
           username: Session.user.email,
           timestamp: serverTimestamp(),
         });
-        console.log('Document written with ID: ', docRef.id);
+        // console.log('Document written with ID: ', docRef.id);
         setInput('');
         setLoading(false);
         setModal(false);
       } catch (e) {
         console.error('Error adding document: ', e);
       }
-    } else {
-      console.log('No session');
     }
   };
   return (
