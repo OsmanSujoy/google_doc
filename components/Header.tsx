@@ -32,7 +32,7 @@ function Header() {
       >
         <AppsIcon color="secondary" fontSize="medium" />
       </Button>
-      <div className="cursor-pointer h-12 w-12 rounded-full ml-2">
+      <div className="cursor-pointer h-11 w-11 rounded-full ml-2">
         <Image
           loading="lazy"
           src={

@@ -16,9 +16,9 @@ import Loading from './Loading';
 interface Props {
   showModal: boolean;
   setModal: Dispatch<SetStateAction<boolean>>;
-  Session: Session | null;
+  session: Session | null;
 }
-function Modal({ showModal, setModal, Session }: Props) {
+function Modal({ showModal, setModal, session }: Props) {
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -29,15 +29,15 @@ function Modal({ showModal, setModal, Session }: Props) {
 
   const createDocument = async () => {
     if (!input) return;
-    if (Session?.user?.email) {
+    if (session?.user?.email) {
       setLoading(true);
       try {
-        const docRef = doc(db, 'userDocs', Session.user.email);
+        const docRef = doc(db, 'userDocs', session.user.email);
         const colRef = collection(docRef, 'docs');
 
         await addDoc(colRef, {
           fileName: input,
-          username: Session.user.email,
+          username: session.user.email,
           timestamp: serverTimestamp(),
         });
         // console.log('Document written with ID: ', docRef.id);
