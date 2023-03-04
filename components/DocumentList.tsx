@@ -4,17 +4,21 @@ import { Session } from 'next-auth';
 import { useCollectionOnce } from 'react-firebase-hooks/firestore';
 import { db } from '../firebase.config';
 import DocumentRow from './DocumentRow';
+import Loading from './Loading';
 
 interface Props {
-  Session: Session | null;
+  session: Session | null;
 }
 
-function DocumentList({ Session }: Props) {
+function DocumentList({ session }: Props) {
   const docRef = query(
-    collection(db, 'userDocs', Session?.user?.email!, 'docs'),
+    collection(db, 'userDocs', session?.user?.email!, 'docs'),
     orderBy('timestamp', 'desc')
   );
   const [data, loading, error] = useCollectionOnce(docRef);
+  if (loading) {
+    return <Loading />;
+  }
   return (
     <section className=" bg-white px-10 md:px-0">
       <div className=" max-w-3xl mx-auto py-8 text-sm text-gray-700">
